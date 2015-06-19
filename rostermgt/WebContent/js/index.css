@@ -1,0 +1,359 @@
+html{
+	width: 100%;
+	height: 100%;
+}
+#container {
+	width: 100%;
+}
+
+@import url(http://fonts.googleapis.com/css?family=Oxygen+Mono);
+/* Please Keep this font import at the very top of any CSS file */
+@charset "UTF-8";
+/* Starter CSS for Flyout Menu */
+body {
+	height: 88%;
+	backgroud: #FFFFFF;
+	overflow: hidden;
+	padding-right: 10px;
+}
+
+/* Clearfix */
+.clearfix:after {
+	content: "";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+}
+
+.clearfix {
+	display: inline-block;
+} /*Those two .clearfix have to be separate!)*/
+.clearfix {
+	display: block;
+}
+
+.container {
+	background: lightgrey;
+	padding: 20px;
+}
+
+#cssmenu {
+	padding: 0;
+	/* margin: 0; */
+	border: 0;
+	min-height: 500px;
+	position: absolute;
+	/*border-style: solid;*/
+    border-right: #1797c0 ;
+}
+
+#cssmenu ul,#cssmenu ul li,#cssmenu ul ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#cssmenu ul {
+	position: relative;
+	z-index: 597;
+	float: left;
+}
+
+#cssmenu ul li {
+	float: left;
+	min-height: 1px;
+	line-height: 1em;
+	vertical-align: middle;
+	position: relative;
+}
+
+#cssmenu ul li.hover,#cssmenu ul li:hover {
+	position: relative;
+	z-index: 599;
+	cursor: default;
+}
+
+#cssmenu ul ul {
+	visibility: hidden;
+	position: absolute;
+	top: 100%; 
+	left: 0px;
+	z-index: 598;
+	width: 100%;
+}
+
+#cssmenu ul ul li {
+	float: none;
+}
+
+#cssmenu ul ul ul {
+	top: -2px;
+	right: 0;
+}
+
+#cssmenu ul li:hover>ul {
+	visibility: visible;
+}
+
+#cssmenu ul ul {
+	top: 1px;
+	left: 99%;
+}
+
+#cssmenu ul li {
+	float: none;
+}
+
+#cssmenu ul ul {
+	margin-top: 1px;
+}
+
+#cssmenu ul ul li {
+	font-weight: normal;
+}
+/* Custom CSS Styles */
+#cssmenu {
+	width: 200px;
+	background: #f2f2f3;
+	font-family: Arial;
+	zoom: 1;
+	font-size: 12px;
+}
+
+#cssmenu:before {
+	content: '';
+	display: block;
+}
+
+#cssmenu:after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+#cssmenu a {
+	display: block;
+	padding: 15px 20px;
+	color: #000000;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+
+#cssmenu>ul {
+	width: 200px;
+}
+
+#cssmenu ul ul {
+	width: 200px;
+}
+
+#cssmenu>ul>li>a {
+	border-right: 4px solid #f2f2f3;
+	color: #000000;
+}
+
+#cssmenu>ul>li>a:hover {
+	color: #000000;
+}
+
+#cssmenu>ul>li.active a {
+	background: #999999;
+}
+
+#cssmenu>ul>li a:hover,#cssmenu>ul>li:hover a {
+	background: #bababa;
+}
+
+#cssmenu li {
+	position: relative;
+}
+
+#cssmenu ul li.has-sub>a:after {
+	content: '+';
+	position: absolute;
+	top: 50%;
+	right: 15px;
+	margin-top: -6px;
+}
+
+#cssmenu ul ul li.first {
+	-webkit-border-radius: 0 3px 0 0;
+	-moz-border-radius: 0 3px 0 0;
+	border-radius: 0 3px 0 0;
+}
+
+#cssmenu ul ul li.last {
+	-webkit-border-radius: 0 0 3px 0;
+	-moz-border-radius: 0 0 3px 0;
+	border-radius: 0 0 3px 0;
+	border-bottom: 0;
+}
+
+#cssmenu ul ul {
+	-webkit-border-radius: 0 3px 3px 0;
+	-moz-border-radius: 0 3px 3px 0;
+	border-radius: 0 3px 3px 0;
+}
+
+#cssmenu ul ul {
+	/*
+	border: 1px solid #0082e7;
+	*/
+}
+
+#cssmenu ul ul a {
+	font-size: 12px;
+	color: #ffffff;
+}
+
+#cssmenu ul ul a:hover {
+	color: #ffffff;
+}
+
+#cssmenu ul ul li {
+}
+
+#cssmenu ul ul li:hover>a {
+	background: #4eb1ff;
+	color: #ffffff;
+}
+
+#cssmenu.align-right>ul>li>a {
+	border-left: 4px solid #f2f2f3;
+	border-right: none;
+}
+
+#cssmenu.align-right {
+	float: right;
+}
+
+#cssmenu.align-right li {
+	text-align: right;
+}
+
+#cssmenu.align-right ul li.has-sub>a:before {
+	content: '+';
+	position: absolute;
+	top: 50%;
+	left: 15px;
+	margin-top: -6px;
+}
+
+#cssmenu.align-right ul li.has-sub>a:after {
+	content: none;
+}
+
+#cssmenu.align-right ul ul {
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	left: -100%;
+	z-index: 598;
+	width: 100%;
+}
+
+#cssmenu.align-right ul ul li.first {
+	-webkit-border-radius: 3px 0 0 0;
+	-moz-border-radius: 3px 0 0 0;
+	border-radius: 3px 0 0 0;
+}
+
+#cssmenu.align-right ul ul li.last {
+	-webkit-border-radius: 0 0 0 3px;
+	-moz-border-radius: 0 0 0 3px;
+	border-radius: 0 0 0 3px;
+}
+
+#cssmenu.align-right ul ul {
+	-webkit-border-radius: 3px 0 0 3px;
+	-moz-border-radius: 3px 0 0 3px;
+	border-radius: 3px 0 0 3px;
+}
+
+#content {
+	float: left;
+	width: 100%;
+	clear: left;
+	min-height: 500px;
+	padding-left: 210px;
+}
+.footer, .push {
+	height: 4em;
+}
+.footer {
+	position: relative;
+	
+	background: #999999 ;
+	height: 30px;
+	width: 101%;
+	bottom: 0px;
+}
+
+.odd {
+	background: #ccc;
+}
+
+.even {
+	background: #eee;
+}
+
+a {
+	text-decoration: none;
+	color: white;
+}
+
+a:visited {
+	text-decoration: none;
+}
+
+/* table {
+	cellspacing: 2px;
+} */
+
+table td a {
+	text-decoration: none;
+	color: black;
+}
+
+th {
+	background-color: #f2f2f3;
+	color: white;
+}
+
+/* table.tablesorter tbody tr.normal-row td {
+	background: #888;
+	color: #fff;
+}
+
+table.tablesorter tbody tr.alt-row td {
+	background: #555;
+	color: #fff;
+} */
+
+#dvLoading {
+	background: #000 url(img/36.gif) no-repeat center center;
+	height: 100px;
+	width: 100px;
+	position: fixed;
+	z-index: 1000;
+	left: 50%;
+	top: 50%;
+	margin: -25px 0 0 -25px;
+}
+.numberCircle {
+    border-radius: 50%;
+    /*behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+
+    width: 14px;
+    height: 14px;
+    padding: 2px;
+    
+    background: #e31821 ;
+    border: 1px solid #666;
+    color: #fff;
+    text-align: center;
+    
+    font: 10px Arial;
+}
+
