@@ -14,7 +14,7 @@
 <script type="text/javascript">
 var globalobj = new GlobalObjects();
 $(document).ready(function(){ 
-	$(".edit_tab").hover(function() {
+	$(".edit_tab").hover(function() {  
         $("#property-hover").html("<p>Put some loading text here while the ajax call loads</p>");
 	});
 	MakeEmployeesPerTmList();
