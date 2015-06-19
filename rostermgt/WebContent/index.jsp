@@ -60,9 +60,10 @@
 		var globalobj = new GlobalObjects();
 
 		$(document)['ready']
-		
+				
 				(function() {//0153903//mar
 					//0122467//tan//0151217
+					alert("masternecopy");  
 					CountNewRequest();
 					//SetSecurity(localStorage.getItem("0b8b667e7722bc7e363b601ce584259d"));	
 					SetSecurity(localStorage
@@ -76,7 +77,7 @@
 					$("#qa_eval").hide();
 					$("#load_tms").hide();
 					$("#qa_links").hide();
-					$("#mgt_qa_link").hide();
+					$("#mgt_qa_link").hide();  
 					$("#wf_rep_links").hide();
 					$("#qa_evaluators").hide();
 
