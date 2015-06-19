@@ -74,7 +74,7 @@
 					$("#load_workgroups").hide();
 					$("#load_qm_reports").hide();
 					$("#load_qm_target").hide();
-					$("#qa_eval").hide();
+					$("#qa_eval").hide();  
 					$("#load_tms").hide();
 					$("#qa_links").hide();
 					$("#mgt_qa_link").hide();  
