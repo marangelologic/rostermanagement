@@ -63,7 +63,7 @@
 				
 				(function() {//0153903//mar
 					//0122467//tan//0151217
-					alert("masternecopy");  
+					
 					CountNewRequest();
 					//SetSecurity(localStorage.getItem("0b8b667e7722bc7e363b601ce584259d"));	
 					SetSecurity(localStorage
