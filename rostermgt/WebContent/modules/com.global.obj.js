@@ -219,14 +219,13 @@ var GlobalObjects = function() {
 		globalobj.ShowLoadingPage();
 		jQuery("#content").load("view/usip");
 		globalobj.SetEmployeeId(id);
-		return false;
 	};
 
 	this.loadCharts = function() {
 		$("#content").load("view/vggd");
 
 	};
-
+   
 	this.UpdateWgInfo = function(id) {
 		globalobj.ShowLoadingPage();
 		jQuery("#content").load("view/uwgp");

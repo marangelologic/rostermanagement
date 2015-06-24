@@ -263,8 +263,8 @@ img {
 					<td><input type="text" name="emp_end_date_update"
 						placeholder="DATE: YYYY-MM-DD" id="emp_end_date_update" /><span
 						style="color: red">*</span></td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
+					<td>PSM</td>
+					<td><select id="emp_psm_update"></select><input type="hidden" id="emp_psm_properties" /></td>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>

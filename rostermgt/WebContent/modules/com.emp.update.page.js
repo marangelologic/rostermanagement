@@ -21,7 +21,11 @@ $(document)
 				function() {
 					$.validator.addMethod("greaterThan", function(value,
 							element, params) {
+
 						var target = $(params).val();
+						if (!$("#tm_chk_box").is(":checked")) {
+							return true;
+						}
 						var isValueNumeric = !isNaN(parseFloat(value))
 								&& isFinite(value);
 						var isTargetNumeric = !isNaN(parseFloat(target))
@@ -35,7 +39,8 @@ $(document)
 						}
 
 						return false;
-					}, 'Must be greater than {0}.');
+
+					}, ('Must be greater than {0}').replace("#", ""));
 
 					$("#reason_row").hide();
 					$("#leave_type_label").hide();
@@ -44,7 +49,7 @@ $(document)
 					ShowTrainingDates();
 					GetEmployeeInfo(globalobj.GetEmployeeId());
 					globalobj.SetPrevHistory("view/usip");
-
+					GetEmpPsmMapping(globalobj.GetEmployeeId());
 					$("#update_emp_form")
 							.validate(
 									{
@@ -67,8 +72,8 @@ $(document)
 												required : '#wg_chk_box:checked'
 											},
 											emp_end_date_update : {
-												greaterThan : "#emp_start_date_update",
-												required : false 
+												required : '#tm_chk_box:checked',
+												greaterThan : "#emp_start_date_update"
 											}
 
 										},
@@ -78,15 +83,16 @@ $(document)
 											emp_end_training_update_page : "<p>Please enter End Date<p>",
 											emp_next_tm_start_date : {
 												required : "<p>Please provide Tm start date End Date<p>",
-												greaterThan : "<p>End date must be greater than start date<p>"
+												greaterThan : "<p>TM End date must be greater than start date<p>"
 											},
 											emp_next_wg_start_date : {
 												required : "<p>Please provide Workgroup End Date<p>",
-												greaterThan : "<p>End date must be greater than start date<p>"
+												greaterThan : "<p>WG End date must be greater than start date<p>"
 
 											},
 											emp_end_date_update : {
-												greaterThan : "<p>End date must be greater than start date<p>"
+												required : "<p>End date should be populated<p>",
+												greaterThan : "<p>End Date should always be greater than start date"
 											}
 										},
 
@@ -733,6 +739,11 @@ function UpdateSpecialistInfo() {
 			return false;
 		}
 	}
+	if ($("#emp_psm_update").val() != $("#emp_psm_properties").attr("psm-id"))
+		UpdateEmpPsmMapping($("#emp_id_update_page").val(),
+				$("#emp_psm_update").val(),
+				$("#emp_psm_update option:selected").text(), $(
+						"#emp_psm_update").attr("psm-email"));
 
 	AddNewWG1();
 	updateOnlyEmpInfo();
@@ -945,7 +956,6 @@ function ShowHistoricalData() {
 																+ id).val(), $(
 														"#emp_tm_end_date_historical_"
 																+ id).val());
-												alert(id);
 											}
 										});
 							});
@@ -967,7 +977,6 @@ function ShowHistoricalData() {
 																"#emp_tm_end_date_historical_"
 																		+ ids)
 																.val());
-												alert(ids);
 											}
 										});
 							});
@@ -1048,47 +1057,88 @@ function UpdateEmployeeInfoWithNewWG() {
 
 function GetWorkgRoupHistory(emp_id) {
 	var data = "";
-	$.ajax({
-		type : "POST",
-		url : "gcwdps",
-		data : "{\"emp_id\": \"" + emp_id + "\",\"is_latest\":\"no\"}",
-		contentType : "application/x-www-form-urlencoded",
-		dataType : "json",
-		success : function(response) {
-			var resultsArray = (typeof response) == 'string' ? eval('('
-					+ response + ')') : response;
-			data = data + "<thead><tr class='boldit'>";
-			data = data + "<th>Work Group</th>";
-			data = data + "<th>start Date</th>";
-			data = data + "<th>End Date</th>";
+	$
+			.ajax({
+				type : "POST",
+				url : "gcwdps",
+				data : "{\"emp_id\": \"" + emp_id + "\",\"is_latest\":\"no\"}",
+				contentType : "application/x-www-form-urlencoded",
+				dataType : "json",
+				success : function(response) {
+					var resultsArray = (typeof response) == 'string' ? eval('('
+							+ response + ')') : response;
+					data = data + "<thead><tr class='boldit'>";
+					data = data + "<th>Work Group</th>";
+					data = data + "<th>Start Date</th>";
+					data = data + "<th>End Date</th>";
 
-			data = data + "<td>Delete</td>" + "</tr></thead><tbody>";
-			for (var int = 0; int < resultsArray.length; int++) {
-				data = data + "<tr>";
+					data = data + "<td>Delete</td>" + "</tr></thead><tbody>";
+					for (var int = 0; int < resultsArray.length; int++) {
+						data = data + "<tr id='wghistoricaldata_"
+								+ resultsArray[int].serial_emp_wg_mapping
+								+ "'>";
 
-				data = data + "<td><input type='text' disabled='true' value='"
-						+ resultsArray[int].wg_names + "' /></td>";
-				data = data + "<td>" + resultsArray[int].start_date + "</td>";
-				data = data + "<td>" + resultsArray[int].end_date + "</td>";
-				data = data + "<td>&nbsp;</td>" + "</tr>";
-			}
-			$("#historical_wg_table").append(data + "</tbody>");
-		},
-		complete : function(e) {
-			$("#historical_wg_table").dataTable({
-				"columns" : [ {
-					"width" : "40%"
-				}, {
-					"width" : "20%"
-				}, {
-					"width" : "20%"
-				}, {
-					"width" : "20%"
-				} ]
+						data = data
+								+ "<td><input type='text' disabled='true' value='"
+								+ resultsArray[int].wg_names + "' /></td>";
+						data = data + "<td><input type='text' id='wghs_start_date_" + resultsArray[int].serial_emp_wg_mapping + "' class='wghs-start' value='" + resultsArray[int].start_date
+								+ " '/></td>";
+						data = data + "<td><input type='text' id='wghs_end_date_" + resultsArray[int].serial_emp_wg_mapping + "' class='wghs-end' value='" + resultsArray[int].end_date
+								+ "' /></td>";
+						data = data
+								+ "<td><a href='javascript:void(0)' onclick='DeleteHistoricalWgDataThatConflicts(\""
+								+ resultsArray[int].serial_emp_wg_mapping
+								+ "\")'><img style='size: x-small' src=\"img/trash24x24.png\" /></a></td></tr>";
+					}
+					$("#historical_wg_table").append(data + "</tbody>");
+				},
+				complete : function(e) {
+					
+					$(".wghs-start").each(
+							function() {
+								var id = $(this).attr("id").substring(16);
+								
+								$(this).datepicker(
+										{
+											
+											changeMonth : true,
+											numberOfMonths : 1,
+											dateFormat : 'yy-mm-dd',
+											changeYear : true,
+											onClose : function(dateText, inst) {
+												UpdateWgHistoricaldata(id, $("#wghs_start_date_"+ id).val(), $("#wghs_end_date_"+ id).val());
+												console.log($(this).attr("id"));
+											}
+										});
+							});
+					$(".wghs-end").each(
+							function() {
+								var ids = $(this).attr("id").substring(14);
+								$(this).datepicker(
+										{
+											changeMonth : true,
+											numberOfMonths : 1,
+											dateFormat : 'yy-mm-dd',
+											changeYear : true,
+											onClose : function(dateText, inst) {
+												UpdateWgHistoricaldata(ids, $("#wghs_start_date_"+ ids).val(),$("#wghs_end_date_"+ ids).val());
+											}
+										});
+							});
+					$("#historical_wg_table").dataTable({
+						"columns" : [ {
+							"width" : "40%"
+						}, {
+							"width" : "20%"
+						}, {
+							"width" : "20%"
+						}, {
+							"width" : "20%"
+						} ]
+					});
+					$("#historical_wg_table td,th").css("text-align", "center");
+				}
 			});
-			$("#historical_wg_table td,th").css("text-align", "center");
-		}
-	});
 }
 
 function GetCurrentWG(emp_id) {
@@ -1424,6 +1474,96 @@ function GetPSMListForUpdate() {
 		},
 		complete : function(e) {
 			$("#update_quick_wg_psm").append(data);
+		}
+	});
+}
+
+function GetEmpPsmMapping(empId) {
+	var data = "";
+	var psmVal = "";
+	$.ajax({
+		type : "POST",
+		async : false,
+		url : "emptypecntrl",
+		data : "{\"signature\":\"getpsmempmapping\",\"emp_id\":\"" + empId
+				+ "\"}",
+		contentType : "application/x-www-form-urlencoded",
+		dataType : "json",
+		success : function(response) {
+			$("#update_quick_wg_psm").html("");
+			var resultsArray = (typeof response) == 'string' ? eval('('
+					+ response + ')') : response;
+			for (var i = 0; i < resultsArray.length; i++) {
+				psmVal = resultsArray[0].psm_id;
+			}
+		},
+		complete : function(e) {
+			RenderEmpPsmMapping(psmVal);
+		}
+	});
+}
+
+function RenderEmpPsmMapping(psmId) {
+	var data = "";
+	$.ajax({
+		type : "POST",
+		url : "ProdFamily",
+		data : "{\"wgPSM\":\"" + "\",signature:\"" + "getpsmlist"
+				+ "\",prodFamName:\"" + "" + "\",prodFamId:\"" + ""
+				+ "\",prodFamDesc:\"" + "" + "\",langCenterId:\"" + ""
+				+ "\",langCenterName:\"" + "" + "\",langCenterDesc:\"" + ""
+				+ "\",wgName:\"" + "" + "\",wgId:\"" + "" + "\",wgTargetHC:\""
+				+ "" + "\",wgWfHC:\"" + "" + "\"}",
+		contentType : "application/x-www-form-urlencoded",
+		dataType : "json",
+		success : function(response) {
+			$("#update_quick_wg_psm").html("");
+			var resultsArray = (typeof response) == 'string' ? eval('('
+					+ response + ')') : response;
+			for (var i = 0; i < resultsArray.length; i++) {
+				if (resultsArray[i].psm_employee_number != psmId) {
+					data = data + "<option value='"
+							+ resultsArray[i].psm_employee_number
+							+ "' psm-email='" + resultsArray[i].psm_email
+							+ "'>" + resultsArray[i].psm_name + "</option>";
+				} else {
+					data = data + "<option selected='selected' value='"
+							+ resultsArray[i].psm_employee_number + "' >"
+							+ resultsArray[i].psm_name + "</option>";
+					$("#emp_psm_properties").attr("psm-id",
+							resultsArray[i].psm_employee_number);
+					$("#emp_psm_properties").attr("psm-email",
+							resultsArray[i].psm_email);
+					$("#emp_psm_properties").attr("psm-name",
+							resultsArray[i].psm_name);
+
+				}
+
+			}
+		},
+		complete : function(e) {
+			$("#emp_psm_update").append(data);
+		}
+	});
+
+}
+function UpdateEmpPsmMapping(empId, psmId, psmName, psmEmail) {
+	globalobj.ShowLoadingPage();
+	alert('called');
+	$.ajax({
+		type : "POST",
+		url : "emptypecntrl",
+		data : "{\"signature\":\"updateemppsmmapping\",\"emp_id\":\"" + empId
+				+ "\",\"psm_id\":\"" + psmId + "\",\"psm_name\":\"" + psmName
+				+ "\",\"psm_email\":\"" + psmEmail + "\"}",
+		contentType : "application/x-www-form-urlencoded",
+		dataType : "json",
+		success : function(response) {
+
+		},
+		complete : function(e) {
+			$.unblockUI();
+			alert("test");
 		}
 	});
 }
@@ -2130,6 +2270,27 @@ function DeleteHistoricalDataThatConflicts(historicalId) {
 		}
 	});
 }
+
+function DeleteHistoricalWgDataThatConflicts(historicalId) {
+	globalobj.ShowLoadingPage();
+	$.ajax({
+		type : "POST",
+		url : "emptypecntrl",
+		data : "{\"signature\":\"deteletwghistoricaldata\"" + ","
+				+ "\"historicalId\":\"" + historicalId + "\"}",
+		contentType : "application/x-www-form-urlencoded",
+		dataType : "json",
+		success : function(response) {
+
+		},
+		complete : function(e) {
+			globalobj.returnSuccess();
+			$("#wghistoricaldata_" + historicalId).remove();
+			$.unblockUI();
+		}
+	});
+}
+
 function UpdateHistoricaldata(serialId, startDate, endDate) {
 	globalobj.ShowLoadingPage();
 	$.ajax({
@@ -2142,6 +2303,25 @@ function UpdateHistoricaldata(serialId, startDate, endDate) {
 		dataType : "json",
 		success : function(response) {
 
+		},
+		complete : function(e) {
+			$.unblockUI();
+		}
+	});
+}
+
+function UpdateWgHistoricaldata(serialId, startDate, endDate) {
+	globalobj.ShowLoadingPage();
+	$.ajax({
+		type : "POST",
+		url : "emptypecntrl",
+		data : "{\"signature\":\"updatewghistoricalinfo\"" + ","
+				+ "\"historicalId\":\"" + serialId + "\",\"start_date\":\""
+				+ startDate + "\",\"end_date\":\"" + endDate + "\"}",
+		contentType : "application/x-www-form-urlencoded",
+		dataType : "json",
+		success : function(response) {
+			
 		},
 		complete : function(e) {
 			$.unblockUI();

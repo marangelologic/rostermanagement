@@ -213,23 +213,71 @@ public class EmployeeSignatures {
 		return sb.toString();
 	}
 
-	public static String UpdateHistoricalData(String historicalId, String sDate, String eDate) {
+	public static String UpdateHistoricalData(String historicalId,
+			String sDate, String eDate) {
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(" UPDATE hdpr.tbl_roster_emp_tm_mapping SET start_date='" );
+		sb.append(" UPDATE hdpr.tbl_roster_emp_tm_mapping SET start_date='");
 		sb.append(sDate + "',");
 		sb.append(" end_date='" + eDate + "'");
 		sb.append("WHERE emp_tm_serial_mapping ='" + historicalId + "'");
-		
+
 		return sb.toString();
 	}
-	
+
 	public static String DeleteHistoricalData(String historicalId) {
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(" DELETE FROM hdpr.tbl_roster_emp_tm_mapping WHere emp_tm_serial_mapping='" + historicalId + "'");
-		
+		sb.append(" DELETE FROM hdpr.tbl_roster_emp_tm_mapping WHere emp_tm_serial_mapping='"
+				+ historicalId + "'");
+
+		return sb.toString();
+	}
+	
+	public static String DeleteWgHistoricalData(String historicalId) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(" DELETE FROM hdpr.tbl_roster_emp_wg_mapping WHere serial_emp_wg_mapping='"
+				+ historicalId + "'");
+
 		return sb.toString();
 	}
 
+	public static String GetEmpPsmMapping(String empId) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(" SELECT * FROM hdpr.tbl_roster_emp_psm_mapping_cc WHERE emp_id='"
+				+ empId + "' AND is_current_psm='1'");
+		return sb.toString();
+
+	}
+
+	public static String UpdateEmpPsmMapping(String empId, String psmId,
+			String psmName, String psmEmail) {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(" Update hdpr.tbl_roster_emp_psm_mapping_cc SET is_current_psm ='0' WHERE emp_id='"
+				+ empId + "'; commit;");
+		sb.append(" INSERT INTO hdpr.tbl_roster_emp_psm_mapping_cc(\"emp_id\",\"psm_id\",\"psm_name\",\"psm_email\",\"is_current_psm\")VALUES('"
+				+ empId + "',");
+		sb.append("'" + psmId + "',");
+		sb.append("'" + psmName + "',");
+		sb.append("'" + psmEmail + "','1');");
+
+		return sb.toString();
+
+	}
+
+	public static String UpdateWgHistoricalData(String historicalId,
+			String sDate, String eDate) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(" UPDATE hdpr.tbl_roster_emp_wg_mapping SET start_date='");
+		sb.append(sDate + "',");
+		sb.append(" end_date='" + eDate + "'");
+		sb.append("WHERE serial_emp_wg_mapping ='" + historicalId + "'");
+
+		return sb.toString();
+	}
 }

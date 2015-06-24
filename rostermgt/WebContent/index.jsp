@@ -72,7 +72,7 @@
 					$("#loadCharts_btn").hide();
 					$("#load_employees").hide();
 					$("#load_workgroups").hide();
-					$("#load_qm_reports").hide();
+					$("#load_qm_reports").hide();  
 					$("#load_qm_target").hide();
 					$("#qa_eval").hide();  
 					$("#load_tms").hide();
