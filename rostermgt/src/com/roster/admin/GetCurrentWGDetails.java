@@ -54,13 +54,13 @@ public class GetCurrentWGDetails extends HttpServlet {
 			}
 
 			if(is_latest.equals("yes")){
-			sql = " select emp_name, wg_names, b.start_date, b.end_date ";
+			sql = " select emp_name,serial_emp_wg_mapping, wg_names, b.start_date, b.end_date ";
 			sql = sql + " from hdpr.tbl_roster_employees a ";
 			sql = sql + " INNER JOIN hdpr.tbl_roster_emp_wg_mapping b ";
 			sql = sql + " ON a.emp_id = b.emp_id  "
 					+ " WHERE a.emp_id = '" + emp_id +"' AND is_current='1' ORDER BY b.start_date DESC";
 			}else{
-				sql = " select emp_name, wg_names, b.start_date, b.end_date ";
+				sql = " select emp_name, serial_emp_wg_mapping,wg_names, b.start_date, b.end_date ";
 				sql = sql + " from hdpr.tbl_roster_employees a ";
 				sql = sql + " INNER JOIN hdpr.tbl_roster_emp_wg_mapping b ";
 				sql = sql + " ON a.emp_id = b.emp_id  "
