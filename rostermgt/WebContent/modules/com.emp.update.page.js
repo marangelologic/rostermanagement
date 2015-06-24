@@ -1110,7 +1110,7 @@ function GetWorkgRoupHistory(emp_id) {
 												console.log($(this).attr("id"));
 											}
 										});
-							});
+							}); 
 					$(".wghs-end").each(
 							function() {
 								var ids = $(this).attr("id").substring(14);
