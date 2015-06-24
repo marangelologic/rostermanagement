@@ -33,7 +33,7 @@ public class emptypecntrl extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -45,7 +45,7 @@ public class emptypecntrl extends HttpServlet {
 		ResultSet data = null;
 		try {
 
-			//javax.naming.InitialContext ctx = null;
+			// javax.naming.InitialContext ctx = null;
 			String is = request.getParameterMap().toString();
 			String paraNames[] = is.split("=");
 			String jsonParameters = (paraNames[0] + "}").replace("{{", "{")
@@ -58,42 +58,47 @@ public class emptypecntrl extends HttpServlet {
 						"postgres", "P0stgres");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace(); 
+				e.printStackTrace();
 			}
 			String sql;
-			String signature = (jsonObj.optString("signature",""));
-			String emp_type = (jsonObj.optString("emp_type",""));
-			String replaced_employee = (jsonObj.optString("replaced_employee",""));
-			String start_date = (jsonObj.optString("start_date",""));
-			String end_date = (jsonObj.optString("end_date",""));
-			String taleo_no = (jsonObj.optString("taleo_no",""));
-			String description = (jsonObj.optString("description",""));
-			String is_replaced = (jsonObj.optString("is_replaced",""));
-			String wgname = (jsonObj.optString("wgname",""));
-			String tm_id = (jsonObj.optString("tm_id",""));
-			String emp_id = (jsonObj.optString("emp_id",""));
-			String emp_name = (jsonObj.optString("emp_name",""));
-			String email = (jsonObj.optString("email",""));
-			String leave_type = (jsonObj.optString("leave_type",""));
-			String interimVal = (jsonObj.optString("interimVal",""));
-			String historicalId = jsonObj.optString("historicalId","");
-			
-			String currentStatVal = jsonObj.optString("currstat","");
+			String signature = (jsonObj.optString("signature", ""));
+			String emp_type = (jsonObj.optString("emp_type", ""));
+			String replaced_employee = (jsonObj.optString("replaced_employee",
+					""));
+			String start_date = (jsonObj.optString("start_date", ""));
+			String end_date = (jsonObj.optString("end_date", ""));
+			String taleo_no = (jsonObj.optString("taleo_no", ""));
+			String description = (jsonObj.optString("description", ""));
+			String is_replaced = (jsonObj.optString("is_replaced", ""));
+			String wgname = (jsonObj.optString("wgname", ""));
+			String tm_id = (jsonObj.optString("tm_id", ""));
+			String emp_id = (jsonObj.optString("emp_id", ""));
+			String emp_name = (jsonObj.optString("emp_name", ""));
+			String email = (jsonObj.optString("email", ""));
+			String leave_type = (jsonObj.optString("leave_type", ""));
+			String interimVal = (jsonObj.optString("interimVal", ""));
+			String historicalId = jsonObj.optString("historicalId", "");
+
+			String psmId = (jsonObj.optString("psm_id", ""));
+			String psmName = jsonObj.optString("psm_name", "");
+
+			String currentStatVal = jsonObj.optString("currstat", "");
 
 			switch (signature) {
 			case "addLeave":
-				sql = EmployeeSignatures.AddLeaveEmployee(emp_id,leave_type
-						,"1", start_date, end_date);
+				sql = EmployeeSignatures.AddLeaveEmployee(emp_id, leave_type,
+						"1", start_date, end_date);
 				break;
 			case "updateinterrimstatus":
-				sql = EmployeeSignatures.UpdateEmployeeInterimStatus(emp_id, interimVal);
+				sql = EmployeeSignatures.UpdateEmployeeInterimStatus(emp_id,
+						interimVal);
 				break;
 			case "insertinterim":
 				sql = EmployeeSignatures.InsertInterimTM(emp_id);
-				break;	
+				break;
 			case "historicalinterim":
 				sql = EmployeeSignatures.MakeInterimHistorical(emp_id);
-				break;	
+				break;
 			case "addContractual":
 				sql = EmployeeSignatures.AddContractualEmployee(emp_id,
 						emp_name, email, start_date, end_date, tm_id,
@@ -103,8 +108,9 @@ public class emptypecntrl extends HttpServlet {
 				sql = EmployeeSignatures.DeleteHistoricalData(historicalId);
 				break;
 			case "updatehistoricalinfo":
-				sql = EmployeeSignatures.UpdateHistoricalData(historicalId, start_date, end_date);
-				break; 
+				sql = EmployeeSignatures.UpdateHistoricalData(historicalId,
+						start_date, end_date);
+				break;
 			case "addResigned":
 				sql = "";
 				break;
@@ -112,13 +118,30 @@ public class emptypecntrl extends HttpServlet {
 				sql = workGroupController.GetTmList();
 				break;
 			case "getcurrentempstat":
-				sql = EmployeeSignatures.GetCurrentStatus(currentStatVal, emp_id);
-				break;	
+				sql = EmployeeSignatures.GetCurrentStatus(currentStatVal,
+						emp_id);
+				break;
 			case "updatecurrentemptminfo":
-				sql = EmployeeSignatures.UpdateCurrentEmpTmInfo(emp_id, tm_id, start_date, end_date);
+				sql = EmployeeSignatures.UpdateCurrentEmpTmInfo(emp_id, tm_id,
+						start_date, end_date);
 				break;
 			case "updatecurrentempwginfo":
-				sql= EmployeeSignatures.UpdateCurrentEmpWgInfo(emp_id, wgname, start_date, end_date);
+				sql = EmployeeSignatures.UpdateCurrentEmpWgInfo(emp_id, wgname,
+						start_date, end_date);
+				break;
+			case "getpsmempmapping":
+				sql = EmployeeSignatures.GetEmpPsmMapping(emp_id);
+				break;
+			case "updateemppsmmapping":
+				sql = EmployeeSignatures.UpdateEmpPsmMapping(emp_id, psmId,
+						psmName, email);
+				break;
+			case "updatewghistoricalinfo":
+				sql = EmployeeSignatures.UpdateWgHistoricalData(historicalId,
+						start_date, end_date);
+				break;
+			case "deteletwghistoricaldata":
+				sql = EmployeeSignatures.DeleteWgHistoricalData(historicalId);
 				break;
 			default:
 				sql = "default";
