@@ -50,7 +50,6 @@ td:first-child,td:third-child {
 
 table {
 	border-collapse: collapse;
-	padding-left: 80px;
 	width: 100%;
 }
 
@@ -177,7 +176,7 @@ select {
 			Team Manager</a>
 		<p>&nbsp;</p>
 		
-		<div id="member_wg_list"></div>
+		<table id="member_wg_list" class="display"></table>
 
 		<p>&nbsp;</p>
 		<p>&nbsp;</p>

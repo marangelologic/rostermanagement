@@ -399,8 +399,8 @@ var newScore = score;
 }
 
 
-function PopUpEvaluatorInfo(serialId) {
-	window.open("../rostermgt/qmevaluatorspage.jsp?serialId=" + serialId, "",
+function PopUpEvaluatorInfo(qmreq) {
+	window.open("../rostermgt/qmevaluatorspage.jsp?qmreq=" + qmreq, "",
 			"width=500, height=1130");
 
 }

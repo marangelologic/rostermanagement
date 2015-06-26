@@ -80,6 +80,8 @@ public class QaTmCtrl extends HttpServlet {
 			String dec_type = jsonObj.optString("dec_type", "");
 			String app_week_no = jsonObj.optString("app_week_no", "");
 			String reasonQm = jsonObj.optString("reasonQm", "");
+			String qmreq = jsonObj.optString("qmreq","");
+			String qmserialreq = jsonObj.optString("qmserialreq","");
 
 			try {
 				conn = ConnectionUtil.connectUtil();
@@ -121,6 +123,15 @@ public class QaTmCtrl extends HttpServlet {
 				break;
 			case "taggingmethod":
 				sqlUpdate = TmQaModel.UpdateTmRequest(serialId,reportingStatus,imp360Status);
+				break;
+			case "gettmtargetevalmapping":
+				sqlUpdate = TmQaModel.GetTmTargetEvaluatorMapping(qmreq);
+				break;
+			case "updateevaluatortarget":
+				sqlUpdate = TmQaModel.UpdateEvaluatorTarget(currScore, qmserialreq);
+				break;
+			case "deleteevaluatortarget":
+				sqlUpdate = TmQaModel.DeleteeEvaluatorTarget(qmserialreq);
 				break;
 			default:
 				sqlUpdate = "error" + method;
@@ -164,7 +175,7 @@ public class QaTmCtrl extends HttpServlet {
 				try {
 					st.close();
 					conn.close();
-					conn = null;
+					data.close();
 				} catch (Exception e) {
 					// TODO: handle exception
 				}

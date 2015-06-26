@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-<title>Evalutors</title>
+<title>Evalutors @ Roster Management tool</title>
 <link rel="stylesheet" type="text/css"
 	href="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.7/css/foundation.min.css">
 <link rel="stylesheet" type="text/css" href="dataTables.foundation.css">
@@ -24,17 +24,140 @@
 	src="js/DataTables-1.10.2/media/js/jquery.dataTables.js"></script>
 <link href="js/DataTables-1.10.2/media/css/jquery.dataTables.css"
 	type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="js/blockui/blockui.js"></script>
 
 <style>
 html {
 	overflow-x: visible;
 	overflow-y: visible;
 }
+body {
+	overflow-y: visible;
+}
 </style>
 <script type="text/javascript">
 	$(document).ready(function() {
-		$("#qm_eval_table").dataTable();
+		//$.blockUI({ message : '<span><img src="img/loading-45x45.gif">&nbsp; <label style="padding-left:45px; vertical-align:text-top;color:#cccccc; font-family: Tahoma, Arial, sans-serif; font-size: x-small"> THOMSON REUTERS ROSTER MANAGEMENT </label></span>' });
+		GetQualityEvaluatorsTarget(getUrlParameter("qmreq"));
 	});
+	function getUrlParameter(sParam) {
+		var sPageURL = window.location.search.substring(1);
+		var sURLVariables = sPageURL.split('&');
+		for (var i = 0; i < sURLVariables.length; i++) {
+			var sParameterName = sURLVariables[i].split('=');
+			if (sParameterName[0] == sParam) {
+				return sParameterName[1];
+			}
+		}
+	}
+
+	function GetQualityEvaluatorsTarget(qmreq) {
+		$
+				.blockUI({
+					message : '<span><img src="img/loading-45x45.gif">&nbsp; <label style="padding-left:45px; vertical-align:text-top;color:#cccccc; font-family: Tahoma, Arial, sans-serif; font-size: x-small"> THOMSON REUTERS ROSTER MANAGEMENT </label></span>'
+				});
+		var data = "<thead><tr><th>Evaluator</th><th>Target</th><th>Delete</th></tr></thead><tbody>";
+		var i = 0;
+		$.ajax({
+			type : "POST",
+			url : "QaTmCtrl",
+			data : "{\"signature\":\"gettmtargetevalmapping\",\"qmreq\":\""
+					+ qmreq + "\"}",
+			contentType : "application/x-www-form-urlencoded",
+			dataType : "json",
+			success : function(response) {
+				$("#qm_eval_table").html("");
+				var resultsArray = (typeof response) == 'string' ? eval('('
+						+ response + ')') : response;
+
+				for (i = 0; i < resultsArray.length; i++) {
+					data = data + "<tr id='eval_map_row_"+ resultsArray[i].qm_eval_serial_id + "'><td>" + resultsArray[i].evaluator_name
+							+ "</td>";
+					data = data + "<td><select onChange='UpdateTarget(\""
+							+ resultsArray[i].qm_eval_serial_id
+							+ "\")' id='target_qa_eval_"
+							+ resultsArray[i].qm_eval_serial_id + "'>"
+							+ AppendTargetScores(resultsArray[i].qm_target)
+							+ "</select>" + "</td>";
+					data = data + "<td><a href='javascript:void(0)' onClick='DeleteTarget(\"" + resultsArray[i].qm_eval_serial_id + "\")'><img src='img/trash24x24.png' /></a></td></tr>";
+				}
+
+				$("#qm_eval_table").append(data + "</tbody>");
+
+			},
+			complete : function(e) {
+				$.unblockUI();
+				
+				$("#qm_eval_table").dataTable({
+					columns : [ {
+						"width" : "40%"
+					}, {
+						"width" : "40%"
+					}, {
+						"width" : "20%"
+					} ]
+				});
+
+			}
+		});
+	}
+
+	function DeleteTarget(id) {
+		$
+				.blockUI({
+					message : '<span><img src="img/loading-45x45.gif">&nbsp; <label style="padding-left:45px; vertical-align:text-top;color:#cccccc; font-family: Tahoma, Arial, sans-serif; font-size: x-small"> THOMSON REUTERS ROSTER MANAGEMENT </label></span>'
+				});
+		$
+				.ajax({
+					type : "POST",
+					url : "QaTmCtrl",
+					data : "{\"signature\":\"deleteevaluatortarget\",\"qmserialreq\":\""
+							+ id + "\"}",
+					contentType : "application/x-www-form-urlencoded",
+					dataType : "json",
+					success : function(response) {
+						$("#eval_map_row_" + id).remove();
+						$.unblockUI();
+					}
+				});
+	}
+
+	function UpdateTarget(id) {
+		$
+				.blockUI({
+					message : '<span><img src="img/loading-45x45.gif">&nbsp; <label style="padding-left:45px; vertical-align:text-top;color:#cccccc; font-family: Tahoma, Arial, sans-serif; font-size: x-small"> THOMSON REUTERS ROSTER MANAGEMENT </label></span>'
+				});
+		$.ajax({
+			type : "POST",
+			url : "QaTmCtrl",
+			data : "{\"signature\":\"updateevaluatortarget\",\"currScore\":\""
+					+ $("#target_qa_eval_" + id).val()
+					+ "\",\"qmserialreq\":\"" + id + "\"}",
+			contentType : "application/x-www-form-urlencoded",
+			dataType : "json",
+			success : function(response) {
+				$.unblockUI();
+			}
+		});
+	}  
+
+	function AppendTargetScores(currentTarget) {
+		$
+				.blockUI({
+					message : '<span><img src="img/loading-45x45.gif">&nbsp; <label style="padding-left:45px; vertical-align:text-top;color:#cccccc; font-family: Tahoma, Arial, sans-serif; font-size: x-small"> THOMSON REUTERS ROSTER MANAGEMENT </label></span>'
+				});
+		var data = "";
+		for (var i = 0; i <= 12; i++) {
+			if (i != currentTarget) {
+				data = data + "<option value='" + i +"'>";
+				data = data + i + "</option>";
+			} else {
+				data = data + "<option value='" + i +"' selected='selected'>";
+				data = data + i + "</option>";
+			}
+		}
+		return data;
+	}
 </script>
 <style>
 .buttonA {
@@ -64,21 +187,9 @@ html {
 	background: #0083bf;
 }
 </style>
+
 </head>
 <body>
-	<table id="qm_eval_table" class="display" width="100%">
-		<thead>
-			<tr>
-				<th style="color: black;">samples</th>
-				<th style="color: black;">sample</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>mar</td>
-				<td>angelo</td>
-			</tr>
-		</tbody>
-	</table>
+	<table id="qm_eval_table"></table>
 </body>
 </html>

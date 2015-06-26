@@ -475,7 +475,7 @@ $(document).keypress(
 			if (keycode == '13') {
 				if ($("#update_emp_form").valid()) {
 					UpdateSpecialistInfo();
-
+/*
 					$("#update_emp_all_info_top").unbind();
 					$("#update_emp_all_info_top").off("click", "**");
 					$("#update_emp_all_info_top").removeAttr("href");
@@ -485,7 +485,7 @@ $(document).keypress(
 					$("#update_emp_all_info_bottom").off("click", "**");
 					$("#update_emp_all_info_bottom").removeAttr("href");
 					$("#update_emp_all_info_bottom").attr("style",
-							"background:#a1a1a1");
+							"background:#a1a1a1");*/
 
 				}
 			}
@@ -526,7 +526,7 @@ function runScript(e) {
 	if (e.keyCode == 13) {
 		if ($("#update_emp_form").valid()) {
 			UpdateSpecialistInfo();
-			$(this).removeAttr("href");
+			/*$(this).removeAttr("href");
 			$(this).attr("style", "background:#a1a1a1");
 			$(this).unbind();
 			$(this).off("click", "**");
@@ -534,7 +534,7 @@ function runScript(e) {
 			$("#update_emp_all_info_bottom").off("click", "**");
 			$("#update_emp_all_info_bottom").removeAttr("href");
 			$("#update_emp_all_info_bottom")
-					.attr("style", "background:#a1a1a1");
+					.attr("style", "background:#a1a1a1");*/
 		}
 	}
 }

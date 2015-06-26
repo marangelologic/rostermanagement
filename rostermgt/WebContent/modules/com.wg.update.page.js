@@ -132,41 +132,46 @@ function GetWgMembers(wgName) {
 			.ajax({
 				type : "POST",
 				url : "gwgm",
-				data : "{\"wg_names\":\"" + wgName + "\"}",
+				data : "{\"wg_names\":\""
+						+ wgName
+						+ "\",\"role\": \""
+						+ localStorage
+								.getItem("29a7e96467b69a9f5a93332e29e9b0de")
+						+ "\"}",
 				contentType : "application/x-www-form-urlencoded",
 				dataType : "json",
 				success : function(response) {
 					$("#member_wg_list").html("");
 					var resultsArray = (typeof response) == 'string' ? eval('('
 							+ response + ')') : response;
-					var data = "<table class='tbl_mem_list'>";
+
+					var data = "";
 					data = data
-							+ "<tr><td> <b> Employee Name</b> </td> <td><b>Start Date for this Work Group </b> </td></tr>";
-					data = data + "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
+							+ "<thead><tr><th> <b> Employee Name</b> </th> <th>Start Date</th> <th><b>End Date</b> </th></tr></thead><tbody>";
+					
 					for (var i = 0; i < resultsArray.length; i++) {
 						data = data
 								+ "<tr><td style='align:right; width:25%'><a href='javascript:void(0)' onclick='globalobj.redirectToEmpPage(\""
 								+ resultsArray[i].emp_id
-								+ "\")' class='member_list'>"
+								+ "\")'>"
 								+ resultsArray[i].emp_name + "</a></td><td>"
-								+ resultsArray[i].start_date + "</td></tr>";
-					}
-					if (resultsArray.length <= 3) {
-
-						data = data + "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
-						data = data + "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
-					}
-					if (resultsArray.length <= 0) {
-						for (var i = 0; i < 3; i++) {
-							data = data
-									+ "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
-						}
+								+ resultsArray[i].start_date + "</td><td>&nbsp;</td></tr>";
 					}
 
-					$("#member_wg_list").append(data + "</table>");
+					$("#member_wg_list").append(data + "</tbody>");
 
 				},
 				complete : function(e) {
+					$("#member_wg_list").dataTable({
+						"columns" : [ {
+							"width" : "40%"
+						}, {
+							"width" : "40%"
+						}, {
+							"width" : "20%"
+						} ]
+					});
+					$("#member_wg_list th").css("text-align", "center");
 					GetCurrentHeadCount(wgName);
 					GetTargetHeadCount(wgName);
 					$("#wg_id_update_page").attr("disabled", "disabled");
