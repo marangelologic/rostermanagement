@@ -25,7 +25,7 @@
 			<script type="text/javascript"
 				src="js/jquery-ui-1.9.1/ui/minified/jquery-ui.min.js"></script>
 
-			<script type="text/javascript"
+			<script type="text/javascript"  
 				src="js/jquery-ui-1.9.1/ui/jquery.ui.core.js"></script>
 			<script type="text/javascript"
 				src="js/jquery-ui-1.9.1/ui/jquery.ui.widget.js"></script>
