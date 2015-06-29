@@ -17,7 +17,7 @@
 			<link rel="apple-touch-icon-precomposed"
 				href="img/Gnome-Stock-Person-64.ico" />
 			<script type="text/javascript" src="js/jquery-1.11.1.js"></script>
-
+  
 			<script type="text/javascript"
 				src="js/DataTables-1.10.2/media/js/jquery.js"></script>
 
