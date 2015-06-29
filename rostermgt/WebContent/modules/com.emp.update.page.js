@@ -519,9 +519,9 @@ function GetRoleCategory(emp_id, role) {
 		},
 		complete : function(e) {
 
-		}
+		}  
 	});
-}
+} 
 function runScript(e) {
 	if (e.keyCode == 13) {
 		if ($("#update_emp_form").valid()) {
