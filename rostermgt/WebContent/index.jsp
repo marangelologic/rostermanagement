@@ -70,7 +70,7 @@
 
 							CountNewRequest();
 							//SetSecurity(localStorage.getItem("0b8b667e7722bc7e363b601ce584259d"));	
-							SetSecurity("6016812");//0122467
+							SetSecurity("6016812");//0122467 //sample
 							globalobj.ShowLoadingPage();
 							$("#loadCharts_btn").hide();
 							$("#load_employees").hide();
